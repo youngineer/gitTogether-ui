@@ -14,13 +14,13 @@ const Login = () => {
 
   const handleLogin = async() => {
     try{
-      const loginResponse = await axios.post(`${BASE_URL}login`,
+      const loginResponse = await axios.post(`${BASE_URL}/login`,
       {emailId, password},
       {withCredentials: true}
     );
 
     dispatch(addUser(loginResponse.data.data));
-    return navigate("/feed");
+    return navigate("/profile/feed");
     } catch (err) {
       console.error(err)
     }

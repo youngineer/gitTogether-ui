@@ -11,7 +11,7 @@ const NavBar = () => {
 
   const handleLogout = async() => {
     try {
-        await axios.post(`${BASE_URL}logout`, {}, {
+        await axios.post(`${BASE_URL}/logout`, {}, {
             withCredentials: true
         });
 
@@ -51,7 +51,21 @@ const NavBar = () => {
               <li>
                 <Link to="/profile" className="justify-between">
                   Profile
-                  <span className="badge">New</span>
+                </Link>
+              </li>
+              <li>
+                <Link to="/profile/feed" >
+                    Feed
+                </Link>
+              </li>
+              <li>
+                <Link to="/profile/connections" >
+                    My Connections
+                </Link>
+              </li>
+              <li>
+                <Link to="/profile/requests" >
+                    My Requests
                 </Link>
               </li>
               <li>
