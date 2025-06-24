@@ -12,7 +12,6 @@ const Connections = () => {
         const connectionsApiUrl = `${BASE_URL}/user/connections`;
         try {
             const connectionsResponse = await axios.get(connectionsApiUrl, {withCredentials: true});
-            console.log(connectionsResponse?.data?.body);
             dispatch(addConnections(connectionsResponse?.data?.body));
             
         } catch (error) {

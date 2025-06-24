@@ -128,6 +128,7 @@ const EditProfile = ({ user }) => {
         </div>
         <UserCard
           user={{ firstName, lastName, photoUrl, age, gender, about }}
+          isForEditProfile={true}
         />
       </div>
       {showToast && (

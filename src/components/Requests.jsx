@@ -16,7 +16,6 @@ const Requests = () => {
         { withCredentials: true }
       );
       dispatch(removeRequests(_id));
-      await fetchRequests();
     } catch (err) {}
   };
 
@@ -26,7 +25,7 @@ const Requests = () => {
         withCredentials: true,
       });
 
-      dispatch(addRequests(res?.data?.body));
+      dispatch(addRequests(res.data.data));
     } catch (err) {}
   };
 
@@ -40,57 +39,50 @@ const Requests = () => {
     return <h1 className="flex justify-center my-10"> No Requests Found</h1>;
 
   return (
-  <div className="text-center my-10 px-4 max-w-4xl mx-auto">
-    <h1 className="text-3xl font-semibold text-white mb-6">Connection Requests</h1>
+    <div className="text-center my-10">
+      <h1 className="text-bold text-white text-3xl">Connection Requests</h1>
 
-    {requests.length === 0 ? (
-      <p className="text-gray-400">No pending requests.</p>
-    ) : (
-      <div className="space-y-6">
-        {requests.map((request) => {
-          const { _id, firstName, lastName, photoUrl, age, gender, about } = request.fromUserId;
-          console.log(_id);
+      {requests.map((request) => {
+        const { _id, firstName, lastName, photoUrl, age, gender, about } =
+          request.fromUserId;
 
-          return (
-            <div
-              key={_id}
-              className="flex flex-col md:flex-row items-center bg-base-300 p-6 rounded-lg shadow-md md:justify-between text-left"
-            >
+        return (
+          <div
+            key={_id}
+            className=" flex justify-between items-center m-4 p-4 rounded-lg bg-base-300  mx-auto"
+          >
+            <div>
               <img
-                alt="User avatar"
-                className="w-20 h-20 rounded-full object-cover"
+                alt="photo"
+                className="w-20 h-20 rounded-full"
                 src={photoUrl}
               />
-              <div className="md:mx-6 flex-1 mt-4 md:mt-0">
-                <h2 className="text-xl font-bold text-white">
-                  {firstName} {lastName}
-                </h2>
-                {age && gender && (
-                  <p className="text-sm text-gray-300 mt-1">{age}, {gender}</p>
-                )}
-                <p className="text-sm text-gray-400 mt-2">{about}</p>
-              </div>
-              <div className="flex gap-3 mt-4 md:mt-0">
-                <button
-                  className="px-4 py-2 bg-red-500 text-white rounded-md hover:bg-red-600 transition"
-                  onClick={() => reviewRequest("rejected", request.fromUserId._id)}
-                >
-                  Reject
-                </button>
-                <button
-                  className="px-4 py-2 bg-green-500 text-white rounded-md hover:bg-green-600 transition"
-                  onClick={() => reviewRequest("accepted", request.fromUserId._id)}
-                >
-                  Accept
-                </button>
-              </div>
             </div>
-          );
-        })}
-      </div>
-    )}
-  </div>
-);
-
+            <div className="text-left mx-4 ">
+              <h2 className="font-bold text-xl">
+                {firstName + " " + lastName}
+              </h2>
+              {age && gender && <p>{age + ", " + gender}</p>}
+              <p>{about}</p>
+            </div>
+            <div>
+              <button
+                className="btn btn-primary mx-2"
+                onClick={() => reviewRequest("rejected", request._id)}
+              >
+                Reject
+              </button>
+              <button
+                className="btn btn-secondary mx-2"
+                onClick={() => reviewRequest("accepted", request._id)}
+              >
+                Accept
+              </button>
+            </div>
+          </div>
+        );
+      })}
+    </div>
+  );
 };
 export default Requests;
