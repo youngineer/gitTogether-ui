@@ -8,7 +8,6 @@ import UserCard from "./UserCard";
 const Feed = () => {
   const feed = useSelector((store) => store.feed);
   const dispatch = useDispatch();
-  const [cardIndex, setCardIndex] = useState(0);
 
   const getFeed = async () => {
     try {
@@ -16,37 +15,31 @@ const Feed = () => {
         withCredentials: true,
       });
       dispatch(addUserToFeed(res?.data?.data));
-      console.log("URL:", BASE_URL + "/profile/feed", res?.data?.data)
-      
     } catch (err) {
-      console.error(err)
+      console.error(err);
     }
   };
 
   useEffect(() => {
-    getFeed()
-    console.log("getFeed executed")
+    getFeed();
   }, []);
-
-  const currentCard = feed[cardIndex];
-
-  const handleNextCardLoad =() => {
-    setCardIndex((prev) => prev + 1);
-  }
 
   if (!feed) {
     return <h1 className="flex justify-center my-10">Loading...</h1>;
   }
 
-  if (feed.length === 0 || cardIndex >= feed.length) {
+  if (feed.length === 0) {
     return <h1 className="flex justify-center my-10">No new users available!</h1>;
   }
 
+  const currentCard = feed[0];
+
   return (
-  <div className="flex justify-center my-10" key={availableUser._id} >
-      <UserCard user={currentCard} onClick={handleNextCardLoad} />
-  </div>
+    <div className="flex justify-center my-10" key={currentCard._id}>
+      <UserCard user={currentCard} onClick={getFeed} />
+    </div>
   );
 };
+
 
 export default Feed;

@@ -5,7 +5,11 @@ const feedSlice = createSlice({
     initialState: null,
     reducers: {
         addUserToFeed: (state, action) => action.payload,
-        removeUserFromFeed: (state, action) => null
+        removeUserFromFeed: (state, action) => {
+            return state.filter((availableUsers) => {
+                availableUsers._id !== action.payload
+            })
+        }
     }
 });
 

@@ -14,21 +14,20 @@ const UserCard = ({ user, isForEditProfile, onClick }) => {
 
     const handleSendConnection= async(status, userId) => {
         const sendConnectionApiUrl = BASE_URL + "/request/send/" + status + "/" + userId;
-        console.log(sendConnectionApiUrl);
 
         try {
             const sendConnectionResponse = await axios.post(sendConnectionApiUrl, {}, {
                 withCredentials: true
             });
             dispatch(removeUserFromFeed(userId));
+            if (onClick) {
+                onClick();
+            };
         } catch (error) {
             console.error(error)
         }
     }
 
-    if(onClick) {
-        onClick(); //Move to the next userCard
-    }
 
     return (
         <div id={_id}>
