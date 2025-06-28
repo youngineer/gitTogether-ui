@@ -2,42 +2,50 @@ import axios from "axios";
 import { BASE_URL } from "../utils/constants";
 import { useDispatch, useSelector } from "react-redux";
 import { addUserToFeed } from "../utils/feedSlice";
-import { useEffect } from "react";
+import { useEffect, useState } from "react";
 import UserCard from "./UserCard";
 
 const Feed = () => {
   const feed = useSelector((store) => store.feed);
   const dispatch = useDispatch();
+  const [cardIndex, setCardIndex] = useState(0);
 
   const getFeed = async () => {
-    if (feed) return;
     try {
       const res = await axios.get(BASE_URL + "/profile/feed", {
         withCredentials: true,
       });
-      console.log(res?.data?.data);
       dispatch(addUserToFeed(res?.data?.data));
+      console.log("URL:", BASE_URL + "/profile/feed", res?.data?.data)
       
     } catch (err) {
-      //TODO: handle error
+      console.error(err)
     }
   };
 
   useEffect(() => {
     getFeed()
+    console.log("getFeed executed")
   }, []);
 
-  if (!feed) return;
+  const currentCard = feed[cardIndex];
 
-  if (feed.length <= 0)
-    return <h1 className="flex justify-center my-10">No new users founds!</h1>;
+  const handleNextCardLoad =() => {
+    setCardIndex((prev) => prev + 1);
+  }
+
+  if (!feed) {
+    return <h1 className="flex justify-center my-10">Loading...</h1>;
+  }
+
+  if (feed.length === 0 || cardIndex >= feed.length) {
+    return <h1 className="flex justify-center my-10">No new users available!</h1>;
+  }
 
   return (
-    feed && (
-      <div className="flex justify-center my-10">
-        <UserCard user={feed[0]} />
-      </div>
-    )
+  <div className="flex justify-center my-10" key={availableUser._id} >
+      <UserCard user={currentCard} onClick={handleNextCardLoad} />
+  </div>
   );
 };
 
